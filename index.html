@@ -893,6 +893,7 @@
                 <option value="bakery">Выпечка</option>
                 <option value="dairy">Молочные продукты</option>
                 <option value="sauces">Соусы/зелень</option>
+                <option value="grocery">Бакалея</option>
                 <option value="drinks_na">Напитки б/а</option>
                 <option value="drinks_a">Напитки /а</option>
             </select>
@@ -1130,8 +1131,9 @@
     // 2. СПРАВОЧНИКИ И ДАННЫЕ
     // ============================================================
     const productCategories = {
-        vegetables: 'Овощи', fruits: 'Фрукты', meat: 'Мясо', fish: 'Рыба',
-        bakery: 'Выпечка', dairy: 'Молочные продукты', sauces: 'Соусы/зелень',
+        vegetables: 'Овощи', fruits: 'Фрукты', meat: 'Мясо',
+        fish: 'Рыба', bakery: 'Выпечка', dairy: 'Молочные продукты',
+        sauces: 'Соусы/зелень', grocery: 'Бакалея',
         drinks_na: 'Напитки б/а', drinks_a: 'Напитки /а'
     };
 
@@ -1243,10 +1245,15 @@
         bakery: [{ name: 'Багет', checked: false }],
         dairy: [{ name: 'Майонез', checked: false }, { name: 'Сливочное масло', checked: false }],
         sauces: [{ name: 'Соль', checked: false }, { name: 'Перец', checked: false }],
+        grocery: [
+            { name: 'Яйца', checked: false },
+            { name: 'Горошек консервированный', checked: false },
+            { name: 'Мука', checked: false },
+            { name: 'Сахар', checked: false }
+        ],
         drinks_na: [{ name: 'Вода', checked: false }],
         drinks_a: [{ name: 'Шампанское', checked: false }]
     };
-
     let decorItems = {
         textile: [{ name: 'Скатерть', checked: false }],
         dishes: [{ name: 'Новогодние тарелки', checked: false }],
