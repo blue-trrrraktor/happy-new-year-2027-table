@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новогодний планировщик 🎄</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ---------- БАЗА И ФОН ---------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ============ БАЗА ============ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: 'Nunito', 'Comfortaa', system-ui, sans-serif;
             min-height: 100vh;
             background: linear-gradient(160deg, #ffffff 0%, #e8f4fd 40%, #c9e8fa 100%);
             color: #1e3a5f;
@@ -21,18 +22,19 @@
             overflow-x: hidden;
         }
 
-        /* Холст для снежинок */
+        h1, h2, h3, .tab-btn, .dish-category-header, .section-header h2 {
+            font-family: 'Comfortaa', 'Nunito', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
         #snowCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Контент поверх снежинок */
         .app-wrapper {
             position: relative;
             z-index: 1;
@@ -41,7 +43,7 @@
             padding: 20px 24px 60px;
         }
 
-        /* ---------- ШАПКА ---------- */
+        /* ============ ШАПКА ============ */
         header {
             text-align: center;
             padding: 30px 0 10px;
@@ -49,20 +51,24 @@
 
         h1 {
             font-size: 2.6rem;
-            font-weight: 600;
-            color: #2c5282;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5282, #5a9fd4, #2c5282);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
-            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.7);
+            filter: drop-shadow(0 2px 6px rgba(255,255,255,0.8));
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1.02rem;
             color: #5a7d9a;
-            margin-top: 4px;
+            margin-top: 6px;
             font-style: italic;
+            font-family: 'Nunito', sans-serif;
         }
 
-        /* ---------- ВКЛАДКИ ---------- */
+        /* ============ ВКЛАДКИ ============ */
         .tabs {
             display: flex;
             justify-content: center;
@@ -71,129 +77,151 @@
         }
 
         .tab-btn {
-            padding: 12px 32px;
+            padding: 13px 34px;
             border: 1.5px solid #b8d8f0;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(6px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,248,255,0.6));
+            backdrop-filter: blur(8px);
             border-radius: 40px;
-            font-size: 1.05rem;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 600;
             color: #3a5a7a;
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(160, 200, 230, 0.25);
+            box-shadow: 0 4px 14px rgba(160, 200, 230, 0.25), inset 0 1px 0 rgba(255,255,255,0.8);
+            position: relative;
         }
 
         .tab-btn:hover {
-            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(107, 163, 214, 0.35), inset 0 1px 0 rgba(255,255,255,0.8);
             border-color: #8bbde0;
-            transform: translateY(-1px);
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, #d4eafc, #ffffff);
-            border-color: #6ba3d6;
-            color: #1e3a5f;
-            font-weight: 600;
-            box-shadow: 0 6px 20px rgba(107, 163, 214, 0.3);
+            background: linear-gradient(135deg, #7fb8e0, #5a9fd4);
+            border-color: #5a9fd4;
+            color: #ffffff;
+            box-shadow: 0 8px 24px rgba(90, 159, 212, 0.45), inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.35s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; animation: fadeIn 0.35s ease; }
+        .tab-content.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ---------- ОБЩИЕ БЛОКИ ---------- */
+        /* ============ БЛОКИ ============ */
         .section-card {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(180, 215, 240, 0.7);
-            border-radius: 24px;
-            padding: 24px 28px;
+            background: linear-gradient(160deg, rgba(255,255,255,0.92) 0%, rgba(235,246,255,0.82) 100%);
+            backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(180, 215, 240, 0.85);
+            border-radius: 28px;
             margin-bottom: 32px;
-            box-shadow: 0 8px 30px rgba(150, 195, 225, 0.2);
+            box-shadow:
+                0 12px 40px rgba(150, 195, 225, 0.25),
+                inset 0 1px 0 rgba(255,255,255,0.7);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .section-card::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(180, 215, 240, 0.35), transparent 70%);
+            pointer-events: none;
+            border-radius: 50%;
         }
 
         .section-header {
+            padding: 22px 30px;
+            background: linear-gradient(135deg, rgba(212, 234, 252, 0.55), rgba(255, 255, 255, 0.25));
+            border-bottom: 1.5px solid rgba(200, 225, 245, 0.7);
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .section-header h2 {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.35rem;
+            font-weight: 700;
             color: #2c5282;
         }
 
-        /* ---------- КНОПКИ ---------- */
+        .section-body {
+            padding: 24px 30px 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============ КНОПКИ ============ */
         .btn-primary {
-            padding: 10px 22px;
-            border: none;
-            border-radius: 30px;
+            padding: 11px 26px;
+            border: 1.5px solid transparent;
+            border-radius: 40px;
             background: linear-gradient(135deg, #7fb8e0, #5a9fd4);
             color: #ffffff;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.92rem;
+            font-family: 'Nunito', sans-serif;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(90, 159, 212, 0.35);
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(90, 159, 212, 0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+            transition: all 0.22s ease;
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
 
         .btn-primary:hover {
             background: linear-gradient(135deg, #6aace0, #4a8fc4);
-            box-shadow: 0 6px 20px rgba(90, 159, 212, 0.45);
+            box-shadow: 0 8px 22px rgba(90, 159, 212, 0.45), inset 0 1px 0 rgba(255,255,255,0.3);
             transform: translateY(-1px);
         }
 
+        .btn-primary:active { transform: translateY(0); }
+
         .btn-outline {
-            padding: 8px 18px;
+            padding: 9px 20px;
             border: 1.5px solid #a0c8e8;
-            border-radius: 30px;
-            background: transparent;
+            border-radius: 40px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(240,248,255,0.4));
             color: #3a5a7a;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.88rem;
+            font-family: 'Nunito', sans-serif;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.22s ease;
         }
 
         .btn-outline:hover {
             background: #eaf4fc;
             border-color: #7fb8e0;
+            transform: translateY(-1px);
         }
 
-        .btn-small {
-            padding: 6px 14px;
-            font-size: 0.82rem;
-        }
+        .btn-small { padding: 7px 16px; font-size: 0.83rem; }
 
-        /* ---------- СЕТКА ПРОДУКТОВ ---------- */
+        /* ============ ПРОДУКТЫ ============ */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+            gap: 20px;
         }
 
         .product-column h3 {
-            font-size: 0.92rem;
-            font-weight: 600;
+            font-size: 0.88rem;
+            font-weight: 700;
             color: #4a6a8a;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             padding-bottom: 8px;
             margin-bottom: 8px;
             border-bottom: 1.5px solid #cde4f5;
@@ -203,16 +231,14 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 4px;
+            padding: 6px 6px 6px 2px;
             font-size: 0.9rem;
             color: #2c3e50;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: background 0.2s;
         }
 
-        .product-item:hover {
-            background: rgba(220, 240, 255, 0.6);
-        }
+        .product-item:hover { background: rgba(220, 240, 255, 0.65); }
 
         .product-item input[type="checkbox"] {
             width: 17px;
@@ -222,10 +248,40 @@
             flex-shrink: 0;
         }
 
+        .product-item span {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .product-item.checked span {
             text-decoration: line-through;
             opacity: 0.55;
         }
+
+        .product-delete {
+            margin-left: auto;
+            background: transparent;
+            border: none;
+            color: #c0d4e8;
+            cursor: pointer;
+            font-size: 1.15rem;
+            line-height: 1;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .product-item:hover .product-delete { opacity: 1; }
+        .product-delete:hover { background: #fde8e8; color: #d45a5a; }
 
         .empty-hint {
             font-size: 0.82rem;
@@ -234,114 +290,130 @@
             padding: 4px 0;
         }
 
-        /* ---------- КРУГ С БЛЮДАМИ ---------- */
-        .dishes-circle-wrapper {
+        /* ============ БЛЮДА: СЕТКА КАРТОЧЕК ============ */
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .dish-category-card {
+            background: linear-gradient(160deg, #ffffff 0%, #f5faff 100%);
+            border: 1.5px solid #cde4f5;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(150, 195, 225, 0.18), inset 0 1px 0 rgba(255,255,255,0.9);
             display: flex;
-            justify-content: center;
-            padding: 20px 0 10px;
+            flex-direction: column;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .dishes-circle {
-            position: relative;
-            width: 520px;
-            height: 520px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #eaf6fe 60%, #d4ebfa 100%);
-            border: 3px solid #b8d8f0;
-            box-shadow: 0 0 0 12px rgba(255, 255, 255, 0.4), 0 12px 40px rgba(150, 195, 225, 0.25);
+        .dish-category-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(150, 195, 225, 0.3), inset 0 1px 0 rgba(255,255,255,0.9);
         }
 
-        /* Центральный декор */
-        .dishes-circle::after {
-            content: '🍽️';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3.2rem;
-            opacity: 0.35;
-            pointer-events: none;
-        }
-
-        .dish-sector {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-        }
-
-        /* 5 секторов: 0°, 72°, 144°, 216°, 288° */
-        .dish-sector:nth-child(1) { transform: rotate(0deg) translate(170px) rotate(0deg); }
-        .dish-sector:nth-child(2) { transform: rotate(72deg) translate(170px) rotate(-72deg); }
-        .dish-sector:nth-child(3) { transform: rotate(144deg) translate(170px) rotate(-144deg); }
-        .dish-sector:nth-child(4) { transform: rotate(216deg) translate(170px) rotate(-216deg); }
-        .dish-sector:nth-child(5) { transform: rotate(288deg) translate(170px) rotate(-288deg); }
-
-        .dish-card {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(6px);
-            border: 1.5px solid #c2ddf2;
-            border-radius: 16px;
-            padding: 12px 16px;
-            min-width: 130px;
-            max-width: 150px;
+        .dish-category-header {
+            padding: 14px 12px;
+            font-weight: 700;
+            font-size: 0.98rem;
+            color: #2c5282;
             text-align: center;
-            box-shadow: 0 4px 16px rgba(150, 195, 225, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            letter-spacing: 0.5px;
+            border-bottom: 1.5px solid rgba(200, 225, 245, 0.7);
+            background: linear-gradient(135deg, #e8f4fc, #d4ebfa);
         }
 
-        .dish-card:hover {
-            transform: scale(1.04);
-            box-shadow: 0 8px 24px rgba(150, 195, 225, 0.4);
+        .dish-category-card.salads .dish-category-header { background: linear-gradient(135deg, #d8f0d8, #eafae8); }
+        .dish-category-card.snacks .dish-category-header { background: linear-gradient(135deg, #fde4c8, #fff2e0); }
+        .dish-category-card.hot .dish-category-header    { background: linear-gradient(135deg, #fdd4d4, #ffe8e8); }
+        .dish-category-card.side .dish-category-header   { background: linear-gradient(135deg, #fdf0c8, #fffae0); }
+        .dish-category-card.tea .dish-category-header    { background: linear-gradient(135deg, #f8d4e8, #fde8f2); }
+
+        .dish-list {
+            padding: 10px;
+            flex: 1;
+            min-height: 70px;
         }
 
-        .dish-category-label {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #7a9ab8;
+        .dish-entry {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 7px 9px;
+            border-radius: 12px;
             margin-bottom: 4px;
+            transition: background 0.2s;
         }
 
-        .dish-link {
-            font-size: 0.9rem;
+        .dish-entry:hover { background: rgba(220, 240, 255, 0.55); }
+
+        .dish-entry a {
+            font-size: 0.87rem;
             font-weight: 600;
             color: #2c5282;
             text-decoration: none;
-            border-bottom: 1.5px dashed #8bbde0;
-            transition: color 0.2s;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border-bottom: 1px dashed transparent;
+            transition: all 0.2s;
         }
 
-        .dish-link:hover {
-            color: #1a3a5a;
-            border-bottom-color: #5a9fd4;
+        .dish-entry a:hover { color: #4a8fc4; border-bottom-color: #8bbde0; }
+
+        .dish-actions {
+            display: flex;
+            gap: 2px;
+            opacity: 0;
+            transition: opacity 0.2s;
         }
+
+        .dish-entry:hover .dish-actions { opacity: 1; }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: #7a9ab8;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover { background: #eaf4fc; color: #4a8fc4; }
+        .icon-btn.delete:hover { background: #fde8e8; color: #d45a5a; }
 
         .dish-empty {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: #b0c8dc;
             font-style: italic;
+            text-align: center;
+            padding: 12px 0;
         }
 
-        /* ---------- ДЕКОР ---------- */
+        /* ============ ДЕКОР ============ */
         .decor-notes {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
-            margin-top: 10px;
         }
 
-        .note-field {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .note-field { display: flex; flex-direction: column; gap: 8px; }
 
         .note-field label {
-            font-weight: 600;
-            font-size: 0.95rem;
+            font-weight: 700;
+            font-size: 0.92rem;
             color: #3a5a7a;
+            font-family: 'Comfortaa', sans-serif;
         }
 
         .note-field textarea {
@@ -350,8 +422,8 @@
             padding: 12px 14px;
             border: 1.5px solid #cde4f5;
             border-radius: 14px;
-            background: rgba(255, 255, 255, 0.8);
-            font-family: inherit;
+            background: rgba(255, 255, 255, 0.85);
+            font-family: 'Nunito', sans-serif;
             font-size: 0.9rem;
             color: #1e3a5f;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -363,12 +435,12 @@
             box-shadow: 0 0 0 3px rgba(127, 184, 224, 0.2);
         }
 
-        /* ---------- МОДАЛЬНЫЕ ОКНА ---------- */
+        /* ============ МОДАЛЬНЫЕ ОКНА ============ */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(30, 58, 95, 0.35);
+            background: rgba(30, 58, 95, 0.38);
             backdrop-filter: blur(4px);
             z-index: 100;
             justify-content: center;
@@ -376,8 +448,10 @@
             padding: 20px;
         }
 
-        .modal-overlay.open {
-            display: flex;
+        .modal-overlay.open { display: flex; }
+        .modal-overlay.modal-nested {
+            z-index: 200;
+            background: rgba(30, 58, 95, 0.2);
         }
 
         .modal-box {
@@ -385,7 +459,7 @@
             border-radius: 26px;
             padding: 32px 34px;
             width: 100%;
-            max-width: 720px;
+            max-width: 760px;
             max-height: 88vh;
             overflow-y: auto;
             box-shadow: 0 24px 60px rgba(30, 58, 95, 0.25);
@@ -399,7 +473,7 @@
         }
 
         .modal-box h3 {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             color: #2c5282;
             margin-bottom: 20px;
             padding-right: 30px;
@@ -411,27 +485,31 @@
             right: 20px;
             background: none;
             border: none;
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             color: #99b8d0;
             cursor: pointer;
             transition: color 0.2s;
             line-height: 1;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .modal-close:hover {
-            color: #5a9fd4;
-        }
+        .modal-close:hover { color: #5a9fd4; background: #eaf4fc; }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .form-group { margin-bottom: 16px; }
 
-        .form-group label {
+        .form-group label,
+        .recipe-section-label {
             display: block;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.88rem;
             color: #3a5a7a;
             margin-bottom: 6px;
+            font-family: 'Nunito', sans-serif;
         }
 
         .form-group select,
@@ -441,7 +519,7 @@
             padding: 10px 14px;
             border: 1.5px solid #cde4f5;
             border-radius: 12px;
-            font-family: inherit;
+            font-family: 'Nunito', sans-serif;
             font-size: 0.92rem;
             color: #1e3a5f;
             background: #f8fcff;
@@ -456,20 +534,15 @@
             box-shadow: 0 0 0 3px rgba(127, 184, 224, 0.2);
         }
 
-        /* Модалка рецепта — двухколоночная */
         .recipe-modal-layout {
             display: grid;
-            grid-template-columns: 1fr 220px;
-            gap: 24px;
-        }
-
-        .recipe-steps-section {
-            min-width: 0;
+            grid-template-columns: 1fr 240px;
+            gap: 26px;
         }
 
         .step-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 10px;
             align-items: flex-start;
         }
@@ -479,7 +552,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: #eaf4fc;
+            background: linear-gradient(135deg, #eaf4fc, #d4ebfa);
             color: #4a8fc4;
             font-weight: 700;
             font-size: 0.82rem;
@@ -487,6 +560,7 @@
             align-items: center;
             justify-content: center;
             margin-top: 8px;
+            border: 1px solid #cde4f5;
         }
 
         .step-row textarea {
@@ -495,30 +569,86 @@
             padding: 8px 12px;
             border: 1.5px solid #cde4f5;
             border-radius: 10px;
-            font-family: inherit;
+            font-family: 'Nunito', sans-serif;
             font-size: 0.88rem;
             resize: vertical;
             background: #f8fcff;
+            color: #1e3a5f;
         }
 
-        .step-row textarea:focus {
-            outline: none;
-            border-color: #7fb8e0;
+        .step-row textarea:focus { outline: none; border-color: #7fb8e0; box-shadow: 0 0 0 3px rgba(127,184,224,0.15); }
+
+        .step-delete {
+            background: transparent;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: #c0d4e8;
+            cursor: pointer;
+            font-size: 1.3rem;
+            line-height: 1;
+            margin-top: 8px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .step-delete:hover { background: #fde8e8; color: #d45a5a; }
 
         .products-picker {
             border: 1.5px solid #cde4f5;
             border-radius: 14px;
             padding: 12px;
             background: #f8fcff;
-            max-height: 220px;
+            max-height: 320px;
             overflow-y: auto;
         }
 
-        .products-picker .product-item {
-            font-size: 0.85rem;
-            padding: 4px 2px;
+        .products-picker .product-item { font-size: 0.86rem; padding: 5px 4px; }
+        .products-picker .product-item label { cursor: pointer; flex: 1; }
+
+        .selected-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-height: 32px;
+            margin-bottom: 16px;
         }
+
+        .selected-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 6px 4px 12px;
+            background: linear-gradient(135deg, #e8f4fc, #d4ebfa);
+            border: 1px solid #b8d8f0;
+            border-radius: 20px;
+            font-size: 0.79rem;
+            color: #3a5a7a;
+            font-weight: 600;
+        }
+
+        .selected-chip button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7a9ab8;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.15s;
+        }
+
+        .selected-chip button:hover { background: #fde8e8; color: #d45a5a; }
 
         .photo-upload-area {
             border: 2px dashed #b8d8f0;
@@ -529,25 +659,15 @@
             font-size: 0.85rem;
             margin-top: 8px;
             transition: border-color 0.2s, background 0.2s;
+            background: #f8fcff;
         }
 
-        .photo-upload-area:hover {
-            border-color: #7fb8e0;
-            background: #f0f8ff;
-        }
+        .photo-upload-area:hover { border-color: #7fb8e0; background: #f0f8ff; }
 
-        .photo-upload-area input[type="file"] {
-            display: none;
-        }
+        .photo-upload-area input[type="file"] { display: none; }
+        .photo-upload-label { cursor: pointer; display: block; font-weight: 600; }
 
-        .photo-upload-label {
-            cursor: pointer;
-            display: block;
-        }
-
-        .photo-preview {
-            margin-top: 10px;
-        }
+        .photo-preview { margin-top: 10px; }
 
         .photo-preview img {
             max-width: 100%;
@@ -557,31 +677,31 @@
             border: 1.5px solid #cde4f5;
         }
 
-        .url-input {
-            margin-top: 10px;
-            font-size: 0.82rem;
-        }
+        .url-input { margin-top: 10px; }
 
         .url-input input {
             width: 100%;
-            padding: 7px 10px;
+            padding: 8px 12px;
             border: 1.5px solid #cde4f5;
             border-radius: 10px;
             font-size: 0.82rem;
-            font-family: inherit;
+            font-family: 'Nunito', sans-serif;
             background: #f8fcff;
+            color: #1e3a5f;
         }
 
-        /* Модалка просмотра рецепта */
+        .url-input input:focus { outline: none; border-color: #7fb8e0; }
+
+        /* ============ ПРОСМОТР РЕЦЕПТА ============ */
         .recipe-view-layout {
             display: grid;
-            grid-template-columns: 1fr 180px;
+            grid-template-columns: 1fr 200px;
             gap: 24px;
         }
 
         .recipe-view-image {
             width: 100%;
-            height: 160px;
+            height: 170px;
             border-radius: 16px;
             object-fit: cover;
             border: 1.5px solid #cde4f5;
@@ -590,44 +710,39 @@
 
         .recipe-view-image-placeholder {
             width: 100%;
-            height: 160px;
+            height: 170px;
             border-radius: 16px;
             background: linear-gradient(135deg, #eaf4fc, #d4ebfa);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 3.4rem;
             color: #8bbde0;
             border: 1.5px solid #cde4f5;
         }
 
         .fact-box {
-            background: #fff9e6;
+            background: linear-gradient(135deg, #fff9e6, #fff4d6);
             border-left: 4px solid #f0c040;
             border-radius: 10px;
             padding: 12px 16px;
             font-size: 0.9rem;
             color: #5a4a1a;
-            margin-bottom: 16px;
-            line-height: 1.5;
+            margin-bottom: 18px;
+            line-height: 1.55;
         }
 
-        .fact-box strong {
-            color: #8a6a10;
-        }
+        .fact-box strong { color: #8a6a10; }
 
-        .recipe-steps-view {
-            list-style: none;
-            counter-reset: step-counter;
-        }
+        .recipe-steps-view { list-style: none; counter-reset: step-counter; }
 
         .recipe-steps-view li {
             counter-increment: step-counter;
-            margin-bottom: 10px;
-            padding-left: 32px;
+            margin-bottom: 11px;
+            padding-left: 34px;
             position: relative;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.55;
             color: #2c3e50;
         }
 
@@ -636,65 +751,72 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background: #eaf4fc;
+            background: linear-gradient(135deg, #eaf4fc, #d4ebfa);
             color: #4a8fc4;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 1px solid #cde4f5;
         }
 
         .recipe-ingredients {
-            font-size: 0.85rem;
+            font-size: 0.86rem;
             color: #5a7d9a;
-            margin-top: 12px;
+            margin-top: 14px;
             font-style: italic;
+            padding-top: 12px;
+            border-top: 1px dashed #cde4f5;
         }
 
-        /* Пустое состояние */
-        .empty-state {
-            text-align: center;
-            padding: 30px 0;
-            color: #99b8d0;
-            font-style: italic;
-            font-size: 0.9rem;
+        .view-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1.5px solid #eaf4fc;
         }
 
-        /* Адаптивность */
+        .btn-danger {
+            padding: 9px 20px;
+            border: 1.5px solid #fdd4d4;
+            border-radius: 40px;
+            background: linear-gradient(135deg, #fff5f5, #ffe8e8);
+            color: #d45a5a;
+            font-weight: 600;
+            font-size: 0.88rem;
+            font-family: 'Nunito', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-danger:hover { background: #fdd4d4; }
+
+        /* ============ АДАПТИВ ============ */
+        @media (max-width: 1100px) {
+            .dishes-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
         @media (max-width: 900px) {
-            .dishes-circle {
-                width: 420px;
-                height: 420px;
-            }
-            .dish-sector:nth-child(1) { transform: rotate(0deg) translate(135px) rotate(0deg); }
-            .dish-sector:nth-child(2) { transform: rotate(72deg) translate(135px) rotate(-72deg); }
-            .dish-sector:nth-child(3) { transform: rotate(144deg) translate(135px) rotate(-144deg); }
-            .dish-sector:nth-child(4) { transform: rotate(216deg) translate(135px) rotate(-216deg); }
-            .dish-sector:nth-child(5) { transform: rotate(288deg) translate(135px) rotate(-288deg); }
             .recipe-modal-layout,
-            .recipe-view-layout {
-                grid-template-columns: 1fr;
-            }
+            .recipe-view-layout { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 600px) {
-            .dishes-circle {
-                width: 320px;
-                height: 320px;
-            }
-            .dish-sector:nth-child(1) { transform: rotate(0deg) translate(105px) rotate(0deg); }
-            .dish-sector:nth-child(2) { transform: rotate(72deg) translate(105px) rotate(-72deg); }
-            .dish-sector:nth-child(3) { transform: rotate(144deg) translate(105px) rotate(-144deg); }
-            .dish-sector:nth-child(4) { transform: rotate(216deg) translate(105px) rotate(-216deg); }
-            .dish-sector:nth-child(5) { transform: rotate(288deg) translate(105px) rotate(-288deg); }
-            .dish-card { min-width: 100px; padding: 10px 12px; }
-            .dish-link { font-size: 0.8rem; }
+        @media (max-width: 700px) {
+            .dishes-grid { grid-template-columns: repeat(2, 1fr); }
             h1 { font-size: 1.9rem; }
             .modal-box { padding: 24px 20px; }
+            .section-header { padding: 18px 20px; }
+            .section-body { padding: 20px; }
+        }
+
+        @media (max-width: 460px) {
+            .dishes-grid { grid-template-columns: 1fr; }
+            .tab-btn { padding: 11px 20px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -715,27 +837,23 @@
 
     <!-- ================= ВКЛАДКА СТОЛ ================= -->
     <section id="tab-table" class="tab-content active">
-        <!-- Блок продуктов -->
         <div class="section-card">
             <div class="section-header">
                 <h2>🛒 Список продуктов</h2>
                 <button class="btn-primary" id="btnAddProduct">+ Добавить продукты</button>
             </div>
-            <div class="products-grid" id="productsGrid">
-                <!-- Заполняется JS -->
+            <div class="section-body">
+                <div class="products-grid" id="productsGrid"></div>
             </div>
         </div>
 
-        <!-- Блок блюд -->
         <div class="section-card">
             <div class="section-header">
                 <h2>🍲 Блюда</h2>
                 <button class="btn-primary" id="btnAddRecipe">+ Добавить рецепт</button>
             </div>
-            <div class="dishes-circle-wrapper">
-                <div class="dishes-circle" id="dishesCircle">
-                    <!-- Сектора заполняются JS -->
-                </div>
+            <div class="section-body">
+                <div class="dishes-grid" id="dishesGrid"></div>
             </div>
         </div>
     </section>
@@ -747,8 +865,8 @@
                 <h2>🎀 Предметы декора</h2>
                 <button class="btn-primary" id="btnAddDecorItem">+ Добавить предмет</button>
             </div>
-            <div class="products-grid" id="decorGrid">
-                <!-- Заполняется JS -->
+            <div class="section-body">
+                <div class="products-grid" id="decorGrid"></div>
             </div>
         </div>
 
@@ -756,18 +874,20 @@
             <div class="section-header">
                 <h2>✨ Как украшаем</h2>
             </div>
-            <div class="decor-notes">
-                <div class="note-field">
-                    <label for="noteTable">Стол</label>
-                    <textarea id="noteTable" placeholder="Например: льняная скатерть, свечи, еловые ветки…"></textarea>
-                </div>
-                <div class="note-field">
-                    <label for="noteWalls">Стены</label>
-                    <textarea id="noteWalls" placeholder="Гирлянды, венки, постеры…"></textarea>
-                </div>
-                <div class="note-field">
-                    <label for="noteWindows">Окна</label>
-                    <textarea id="noteWindows" placeholder="Снежинки-наклейки, гирлянды, свечи…"></textarea>
+            <div class="section-body">
+                <div class="decor-notes">
+                    <div class="note-field">
+                        <label for="noteTable">Стол</label>
+                        <textarea id="noteTable" placeholder="Например: льняная скатерть, свечи, еловые ветки…"></textarea>
+                    </div>
+                    <div class="note-field">
+                        <label for="noteWalls">Стены</label>
+                        <textarea id="noteWalls" placeholder="Гирлянды, венки, постеры…"></textarea>
+                    </div>
+                    <div class="note-field">
+                        <label for="noteWindows">Окна</label>
+                        <textarea id="noteWindows" placeholder="Снежинки-наклейки, гирлянды, свечи…"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
@@ -778,7 +898,7 @@
 
 <!-- Добавление продукта -->
 <div class="modal-overlay" id="modalAddProduct">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width:520px;">
         <button class="modal-close" data-close="modalAddProduct">&times;</button>
         <h3>Добавить продукт</h3>
         <div class="form-group">
@@ -805,7 +925,7 @@
 
 <!-- Добавление предмета декора -->
 <div class="modal-overlay" id="modalAddDecorItem">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width:520px;">
         <button class="modal-close" data-close="modalAddDecorItem">&times;</button>
         <h3>Добавить предмет декора</h3>
         <div class="form-group">
@@ -826,11 +946,11 @@
     </div>
 </div>
 
-<!-- Добавление рецепта -->
+<!-- Создание/редактирование рецепта -->
 <div class="modal-overlay" id="modalAddRecipe">
     <div class="modal-box">
         <button class="modal-close" data-close="modalAddRecipe">&times;</button>
-        <h3>Добавить рецепт</h3>
+        <h3 id="recipeModalTitle">Добавить рецепт</h3>
         <div class="form-group">
             <label for="recipeCategory">Тип рецепта</label>
             <select id="recipeCategory">
@@ -847,30 +967,25 @@
         </div>
 
         <div class="recipe-modal-layout">
-            <div class="recipe-steps-section">
-                <label style="font-weight:600; font-size:0.9rem; color:#3a5a7a; display:block; margin-bottom:8px;">Шаги рецепта</label>
-                <div id="recipeStepsContainer">
-                    <!-- Шаг 1 по умолчанию -->
-                    <div class="step-row">
-                        <div class="step-number">1</div>
-                        <textarea placeholder="Опишите первый шаг…"></textarea>
-                    </div>
-                </div>
+            <div>
+                <label class="recipe-section-label">Шаги рецепта</label>
+                <div id="recipeStepsContainer"></div>
                 <button class="btn-outline btn-small" id="btnAddStep" style="margin-top:6px;">+ Добавить шаг</button>
+
+                <label class="recipe-section-label" style="margin-top:20px;">
+                    Интересный факт <span style="font-weight:400; color:#99b8d0;">(необязательно)</span>
+                </label>
+                <textarea id="recipeFact" placeholder="Если оставить пустым — подставим шутливый факт по умолчанию" style="width:100%; min-height:70px; padding:10px 14px; border:1.5px solid #cde4f5; border-radius:12px; font-family:'Nunito',sans-serif; font-size:0.9rem; resize:vertical; background:#f8fcff; color:#1e3a5f;"></textarea>
             </div>
 
             <div>
-                <label style="font-weight:600; font-size:0.9rem; color:#3a5a7a; display:block; margin-bottom:8px;">Продукты</label>
+                <label class="recipe-section-label">Продукты</label>
                 <button class="btn-outline btn-small" id="btnPickProducts" style="width:100%; margin-bottom:10px;">Выбрать продукты</button>
-                <div id="productsPickerContainer" style="display:none;" class="products-picker">
-                    <!-- Заполняется JS -->
-                </div>
+                <div id="selectedProductsChips" class="selected-chips"></div>
 
-                <label style="font-weight:600; font-size:0.9rem; color:#3a5a7a; display:block; margin:16px 0 8px;">Фото блюда</label>
+                <label class="recipe-section-label">Фото блюда</label>
                 <div class="photo-upload-area">
-                    <label for="recipePhotoFile" class="photo-upload-label">
-                        📷 Нажмите, чтобы загрузить фото
-                    </label>
+                    <label for="recipePhotoFile" class="photo-upload-label">📷 Загрузить фото</label>
                     <input type="file" id="recipePhotoFile" accept="image/*">
                 </div>
                 <div class="url-input">
@@ -880,9 +995,22 @@
             </div>
         </div>
 
-        <div style="margin-top:22px; display:flex; gap:12px;">
+        <div style="margin-top:24px; display:flex; gap:12px;">
             <button class="btn-primary" id="btnSaveRecipe">Добавить рецепт</button>
             <button class="btn-outline" data-close="modalAddRecipe">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<!-- Выбор продуктов (вложенное окно) -->
+<div class="modal-overlay modal-nested" id="modalPickProducts">
+    <div class="modal-box" style="max-width:520px;">
+        <button class="modal-close" data-close="modalPickProducts">&times;</button>
+        <h3>Выберите продукты</h3>
+        <div id="productsPickerContainer" class="products-picker"></div>
+        <div style="margin-top:18px; display:flex; gap:10px;">
+            <button class="btn-primary" id="btnConfirmProducts">Подтвердить выбор</button>
+            <button class="btn-outline" data-close="modalPickProducts">Отмена</button>
         </div>
     </div>
 </div>
@@ -897,9 +1025,7 @@
                 <div class="fact-box" id="viewRecipeFact">
                     <strong>😄 Интересный факт:</strong> …
                 </div>
-                <ol class="recipe-steps-view" id="viewRecipeSteps">
-                    <!-- Шаги -->
-                </ol>
+                <ol class="recipe-steps-view" id="viewRecipeSteps"></ol>
                 <div class="recipe-ingredients" id="viewRecipeIngredients"></div>
             </div>
             <div>
@@ -907,12 +1033,16 @@
                 <div class="recipe-view-image-placeholder" id="viewRecipeImagePlaceholder">🍽️</div>
             </div>
         </div>
+        <div class="view-actions">
+            <button class="btn-primary" id="btnEditFromView">✎ Редактировать</button>
+            <button class="btn-danger" id="btnDeleteFromView">🗑 Удалить</button>
+        </div>
     </div>
 </div>
 
 <script>
     // ============================================================
-    // 1. СНЕЖИНКИ НА CANVAS
+    // 1. СНЕЖИНКИ (крупные, красивые, шестилучёвые)
     // ============================================================
     const canvas = document.getElementById('snowCanvas');
     const ctx = canvas.getContext('2d');
@@ -925,46 +1055,80 @@
     }
 
     class Snowflake {
-        constructor() {
-            this.reset();
-        }
-        reset() {
+        constructor() { this.reset(true); }
+        reset(initial = false) {
             this.x = Math.random() * W;
-            this.y = Math.random() * -H;
-            this.size = Math.random() * 3.5 + 1.5;
-            this.speedY = Math.random() * 1.2 + 0.5;
+            this.y = initial ? Math.random() * H : -20;
+            this.size = Math.random() * 6 + 4;          // 4–10 px — заметные
+            this.speedY = Math.random() * 1.2 + 0.5;     // падают плавно
             this.speedX = Math.random() * 0.8 - 0.4;
-            this.opacity = Math.random() * 0.6 + 0.3;
+            this.opacity = Math.random() * 0.35 + 0.55;  // 0.55–0.9 — хорошо видно
+            this.rotation = Math.random() * Math.PI * 2;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.025;
             this.swing = Math.random() * Math.PI * 2;
-            this.swingSpeed = Math.random() * 0.02 + 0.005;
+            this.swingSpeed = Math.random() * 0.03 + 0.01;
+            this.windGust = 0;
+            this.windTimer = Math.random() * 200;
         }
         update() {
+            // случайные порывы ветра для хаотичности
+            this.windTimer--;
+            if (this.windTimer <= 0) {
+                this.windGust = (Math.random() - 0.5) * 1.5;
+                this.windTimer = 100 + Math.random() * 200;
+            }
             this.y += this.speedY;
             this.swing += this.swingSpeed;
-            this.x += Math.sin(this.swing) * 0.6 + this.speedX;
-            if (this.y > H + 10) {
-                this.reset();
-                this.y = -10;
-            }
-            if (this.x > W + 10) this.x = -10;
-            if (this.x < -10) this.x = W + 10;
+            this.x += Math.sin(this.swing) * 0.7 + this.speedX + this.windGust * 0.5;
+            this.rotation += this.rotationSpeed;
+            if (this.y > H + 20) { this.reset(); this.y = -20; }
+            if (this.x > W + 20) this.x = -20;
+            if (this.x < -20) this.x = W + 20;
         }
         draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-            ctx.fill();
-            // Лёгкое свечение
-            ctx.shadowColor = 'rgba(200, 230, 255, 0.8)';
-            ctx.shadowBlur = 6;
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.lineWidth = 1.6;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = 'rgba(200, 230, 255, 0.95)';
+            ctx.shadowBlur = 10;
+
+            // 6 лучей
+            for (let i = 0; i < 6; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, -this.size);
+                ctx.stroke();
+
+                // боковые веточки
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size * 0.55);
+                ctx.lineTo(this.size * 0.32, -this.size * 0.78);
+                ctx.moveTo(0, -this.size * 0.55);
+                ctx.lineTo(-this.size * 0.32, -this.size * 0.78);
+                ctx.stroke();
+
+                // маленькие веточки у кончика
+                ctx.beginPath();
+                ctx.moveTo(0, -this.size * 0.8);
+                ctx.lineTo(this.size * 0.2, -this.size * 0.95);
+                ctx.moveTo(0, -this.size * 0.8);
+                ctx.lineTo(-this.size * 0.2, -this.size * 0.95);
+                ctx.stroke();
+
+                ctx.rotate(Math.PI / 3);
+            }
+            ctx.restore();
         }
     }
 
     function initSnow() {
         resizeCanvas();
         snowflakes = [];
-        const count = Math.floor((W * H) / 12000);
-        for (let i = 0; i < count; i++) {
+        const count = Math.floor((W * H) / 16000); // плотность
+        for (let i = 0; i < Math.max(count, 30); i++) {
             snowflakes.push(new Snowflake());
         }
     }
@@ -972,53 +1136,32 @@
     function animateSnow() {
         ctx.clearRect(0, 0, W, H);
         ctx.shadowBlur = 0;
-        snowflakes.forEach(f => {
-            f.update();
-            f.draw();
-        });
+        snowflakes.forEach(f => { f.update(); f.draw(); });
         requestAnimationFrame(animateSnow);
     }
 
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        initSnow();
-    });
-
+    window.addEventListener('resize', () => { resizeCanvas(); initSnow(); });
     initSnow();
     animateSnow();
 
     // ============================================================
-    // 2. ДАННЫЕ
+    // 2. СПРАВОЧНИКИ И ДАННЫЕ
     // ============================================================
     const productCategories = {
-        vegetables: 'Овощи',
-        fruits: 'Фрукты',
-        meat: 'Мясо',
-        fish: 'Рыба',
-        bakery: 'Выпечка',
-        dairy: 'Молочные продукты',
-        sauces: 'Соусы/зелень',
-        drinks_na: 'Напитки б/а',
-        drinks_a: 'Напитки /а'
+        vegetables: 'Овощи', fruits: 'Фрукты', meat: 'Мясо', fish: 'Рыба',
+        bakery: 'Выпечка', dairy: 'Молочные продукты', sauces: 'Соусы/зелень',
+        drinks_na: 'Напитки б/а', drinks_a: 'Напитки /а'
     };
 
     const decorCategories = {
-        textile: 'Текстиль',
-        dishes: 'Посуда',
-        toys: 'Игрушки',
-        stickers: 'Наклейки',
-        tinsel: 'Дождик'
+        textile: 'Текстиль', dishes: 'Посуда', toys: 'Игрушки',
+        stickers: 'Наклейки', tinsel: 'Дождик'
     };
 
     const dishCategories = {
-        salads: 'Салаты',
-        snacks: 'Закуски',
-        hot: 'Горячее',
-        side: 'Гарнир',
-        tea: 'К чаю'
+        salads: 'Салаты', snacks: 'Закуски', hot: 'Горячее', side: 'Гарнир', tea: 'К чаю'
     };
 
-    // Начальные данные для блюд (с фактами и рецептами)
     let dishes = {
         salads: [
             {
@@ -1031,7 +1174,8 @@
                     'Заправьте майонезом, посолите по вкусу и аккуратно перемешайте.',
                     'Дайте салату настояться в холодильнике хотя бы 2 часа — так вкус раскроется полнее.'
                 ],
-                image: ''
+                image: '',
+                ingredients: ['Картофель', 'Морковь', 'Курица', 'Майонез', 'Соль']
             },
             {
                 name: 'Селёдка под шубой',
@@ -1043,7 +1187,8 @@
                     'Выкладывайте слоями: сельдь, лук, картофель, морковь, свёкла. Каждый слой (кроме сельди с луком) промазывайте майонезом.',
                     'Уберите в холодильник на несколько часов, чтобы слои пропитались.'
                 ],
-                image: ''
+                image: '',
+                ingredients: ['Сельдь', 'Картофель', 'Морковь', 'Майонез']
             }
         ],
         snacks: [
@@ -1056,7 +1201,8 @@
                     'Сверху аккуратно выложите красную икру.',
                     'Украсьте веточкой укропа или долькой лимона по желанию.'
                 ],
-                image: ''
+                image: '',
+                ingredients: ['Багет', 'Сливочное масло']
             }
         ],
         hot: [
@@ -1070,7 +1216,8 @@
                     'Достаньте мясо, отделите от костей и нарежьте. Бульон процедите.',
                     'Разложите мясо по формам, залейте бульоном и уберите в холод до застывания (лучше на ночь).'
                 ],
-                image: ''
+                image: '',
+                ingredients: ['Курица', 'Морковь', 'Соль', 'Перец']
             }
         ],
         side: [
@@ -1084,7 +1231,8 @@
                     'Разомните толкушкой до однородности, постепенно подливая отвар, если нужно.',
                     'Попробуйте на соль и подавайте горячим, украсив зеленью.'
                 ],
-                image: ''
+                image: '',
+                ingredients: ['Картофель', 'Сливочное масло', 'Соль']
             }
         ],
         tea: [
@@ -1099,7 +1247,8 @@
                     'Вылейте тесто в форму и выпекайте при 180 °C около 40 минут. Проверьте зубочисткой.',
                     'Остудите и посыпьте сахарной пудрой.'
                 ],
-                image: ''
+                image: '',
+                ingredients: ['Мандарины', 'Сливочное масло']
             }
         ]
     };
@@ -1127,8 +1276,6 @@
     // ============================================================
     // 3. РЕНДЕРИНГ
     // ============================================================
-
-    // --- Продукты ---
     function renderProducts() {
         const grid = document.getElementById('productsGrid');
         grid.innerHTML = '';
@@ -1158,8 +1305,20 @@
                     });
                     const span = document.createElement('span');
                     span.textContent = item.name;
+
+                    const del = document.createElement('button');
+                    del.className = 'product-delete';
+                    del.innerHTML = '×';
+                    del.title = 'Удалить';
+                    del.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        products[key].splice(idx, 1);
+                        renderProducts();
+                    });
+
                     div.appendChild(cb);
                     div.appendChild(span);
+                    div.appendChild(del);
                     col.appendChild(div);
                 });
             }
@@ -1167,54 +1326,74 @@
         }
     }
 
-    // --- Блюда (круг) ---
     function renderDishes() {
-        const circle = document.getElementById('dishesCircle');
-        circle.innerHTML = '';
-
-        const categories = Object.keys(dishCategories);
-        // Для каждого сектора берём первое блюдо (или заглушку)
-        categories.forEach((catKey, index) => {
-            const sector = document.createElement('div');
-            sector.className = 'dish-sector';
-
+        const grid = document.getElementById('dishesGrid');
+        grid.innerHTML = '';
+        for (const [key, label] of Object.entries(dishCategories)) {
             const card = document.createElement('div');
-            card.className = 'dish-card';
+            card.className = 'dish-category-card ' + key;
 
-            const catLabel = document.createElement('div');
-            catLabel.className = 'dish-category-label';
-            catLabel.textContent = dishCategories[catKey];
-            card.appendChild(catLabel);
+            const header = document.createElement('div');
+            header.className = 'dish-category-header';
+            header.textContent = label;
+            card.appendChild(header);
 
-            const list = dishes[catKey] || [];
-            if (list.length === 0) {
+            const list = document.createElement('div');
+            list.className = 'dish-list';
+
+            const items = dishes[key] || [];
+            if (items.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'dish-empty';
                 empty.textContent = 'Нет блюд';
-                card.appendChild(empty);
+                list.appendChild(empty);
             } else {
-                // Показываем первое блюдо как ссылку, остальные — можно добавить список
-                list.forEach((dish, i) => {
+                items.forEach((dish, idx) => {
+                    const entry = document.createElement('div');
+                    entry.className = 'dish-entry';
+
                     const link = document.createElement('a');
                     link.href = '#';
-                    link.className = 'dish-link';
                     link.textContent = dish.name;
-                    link.style.display = 'block';
-                    link.style.marginTop = i > 0 ? '4px' : '0';
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        openRecipeView(dish);
+                        openRecipeView(dish, key, idx);
                     });
-                    card.appendChild(link);
+                    entry.appendChild(link);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'dish-actions';
+
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'icon-btn';
+                    editBtn.innerHTML = '✎';
+                    editBtn.title = 'Редактировать';
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openRecipeEditor(dish, key, idx);
+                    });
+                    actions.appendChild(editBtn);
+
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'icon-btn delete';
+                    delBtn.innerHTML = '✕';
+                    delBtn.title = 'Удалить';
+                    delBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteDish(key, idx);
+                    });
+                    actions.appendChild(delBtn);
+
+                    entry.appendChild(actions);
+                    list.appendChild(entry);
                 });
             }
 
-            sector.appendChild(card);
-            circle.appendChild(sector);
-        });
+            card.appendChild(list);
+            grid.appendChild(card);
+        }
     }
 
-    // --- Декор ---
     function renderDecor() {
         const grid = document.getElementById('decorGrid');
         grid.innerHTML = '';
@@ -1232,7 +1411,7 @@
                 hint.textContent = 'Пока пусто';
                 col.appendChild(hint);
             } else {
-                items.forEach((item) => {
+                items.forEach((item, idx) => {
                     const div = document.createElement('div');
                     div.className = 'product-item' + (item.checked ? ' checked' : '');
                     const cb = document.createElement('input');
@@ -1244,8 +1423,20 @@
                     });
                     const span = document.createElement('span');
                     span.textContent = item.name;
+
+                    const del = document.createElement('button');
+                    del.className = 'product-delete';
+                    del.innerHTML = '×';
+                    del.title = 'Удалить';
+                    del.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        decorItems[key].splice(idx, 1);
+                        renderDecor();
+                    });
+
                     div.appendChild(cb);
                     div.appendChild(span);
+                    div.appendChild(del);
                     col.appendChild(div);
                 });
             }
@@ -1266,46 +1457,40 @@
     });
 
     // ============================================================
-    // 5. МОДАЛЬНЫЕ ОКНА — ОТКРЫТИЕ/ЗАКРЫТИЕ
+    // 5. МОДАЛКИ
     // ============================================================
-    function openModal(id) {
-        document.getElementById(id).classList.add('open');
-    }
-
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('open');
-    }
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
     document.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            closeModal(btn.dataset.close);
+        btn.addEventListener('click', () => closeModal(btn.dataset.close));
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.classList.remove('open');
         });
     });
 
-    // Закрытие по клику на оверлей
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                overlay.classList.remove('open');
-            }
-        });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+        }
     });
 
     // ============================================================
-    // 6. ДОБАВЛЕНИЕ ПРОДУКТА
+    // 6. ПРОДУКТЫ — ДОБАВЛЕНИЕ
     // ============================================================
     document.getElementById('btnAddProduct').addEventListener('click', () => {
         document.getElementById('productName').value = '';
         openModal('modalAddProduct');
+        setTimeout(() => document.getElementById('productName').focus(), 100);
     });
 
     document.getElementById('btnSaveProduct').addEventListener('click', () => {
         const category = document.getElementById('productCategory').value;
         const name = document.getElementById('productName').value.trim();
-        if (!name) {
-            alert('Пожалуйста, введите название продукта.');
-            return;
-        }
+        if (!name) { alert('Введите название продукта.'); return; }
         if (!products[category]) products[category] = [];
         products[category].push({ name, checked: false });
         renderProducts();
@@ -1313,20 +1498,18 @@
     });
 
     // ============================================================
-    // 7. ДОБАВЛЕНИЕ ПРЕДМЕТА ДЕКОРА
+    // 7. ДЕКОР — ДОБАВЛЕНИЕ
     // ============================================================
     document.getElementById('btnAddDecorItem').addEventListener('click', () => {
         document.getElementById('decorName').value = '';
         openModal('modalAddDecorItem');
+        setTimeout(() => document.getElementById('decorName').focus(), 100);
     });
 
     document.getElementById('btnSaveDecorItem').addEventListener('click', () => {
         const category = document.getElementById('decorCategory').value;
         const name = document.getElementById('decorName').value.trim();
-        if (!name) {
-            alert('Пожалуйста, введите название предмета.');
-            return;
-        }
+        if (!name) { alert('Введите название предмета.'); return; }
         if (!decorItems[category]) decorItems[category] = [];
         decorItems[category].push({ name, checked: false });
         renderDecor();
@@ -1334,51 +1517,93 @@
     });
 
     // ============================================================
-    // 8. ДОБАВЛЕНИЕ РЕЦЕПТА
+    // 8. РЕЦЕПТЫ — СОЗДАНИЕ / РЕДАКТИРОВАНИЕ
     // ============================================================
+    let editingRecipe = null;       // { category, index } | null
     let currentPhotoUrl = '';
+    let currentRecipeProducts = [];
 
-    // Открытие модалки добавления рецепта
-    document.getElementById('btnAddRecipe').addEventListener('click', () => {
-        document.getElementById('recipeName').value = '';
-        document.getElementById('recipeCategory').value = 'salads';
-        document.getElementById('recipeStepsContainer').innerHTML = `
-            <div class="step-row">
-                <div class="step-number">1</div>
-                <textarea placeholder="Опишите первый шаг…"></textarea>
-            </div>
-        `;
-        document.getElementById('productsPickerContainer').style.display = 'none';
-        document.getElementById('productsPickerContainer').innerHTML = '';
-        document.getElementById('photoPreview').innerHTML = '';
-        document.getElementById('recipePhotoUrl').value = '';
-        document.getElementById('recipePhotoFile').value = '';
-        currentPhotoUrl = '';
-        openModal('modalAddRecipe');
-    });
-
-    // Добавление шага
-    document.getElementById('btnAddStep').addEventListener('click', () => {
+    function addStepRow(num, value = '') {
         const container = document.getElementById('recipeStepsContainer');
-        const count = container.querySelectorAll('.step-row').length + 1;
         const row = document.createElement('div');
         row.className = 'step-row';
         row.innerHTML = `
-            <div class="step-number">${count}</div>
-            <textarea placeholder="Опишите шаг ${count}…"></textarea>
+            <div class="step-number">${num}</div>
+            <textarea placeholder="Опишите шаг ${num}…">${value}</textarea>
+            <button class="step-delete" title="Удалить шаг">×</button>
         `;
+        row.querySelector('.step-delete').addEventListener('click', () => {
+            row.remove();
+            renumberSteps();
+        });
         container.appendChild(row);
+    }
+
+    function renumberSteps() {
+        document.querySelectorAll('#recipeStepsContainer .step-row').forEach((row, i) => {
+            row.querySelector('.step-number').textContent = i + 1;
+        });
+    }
+
+    function renderSelectedChips() {
+        const container = document.getElementById('selectedProductsChips');
+        container.innerHTML = '';
+        if (currentRecipeProducts.length === 0) {
+            container.innerHTML = '<span style="font-size:0.79rem; color:#99b8d0; font-style:italic;">Продукты не выбраны</span>';
+            return;
+        }
+        currentRecipeProducts.forEach((name, i) => {
+            const chip = document.createElement('span');
+            chip.className = 'selected-chip';
+            chip.innerHTML = `<span>${name}</span><button title="Удалить">×</button>`;
+            chip.querySelector('button').addEventListener('click', () => {
+                currentRecipeProducts.splice(i, 1);
+                renderSelectedChips();
+            });
+            container.appendChild(chip);
+        });
+    }
+
+    function openRecipeEditor(dish = null, category = null, index = null) {
+        editingRecipe = dish ? { category, index } : null;
+        currentRecipeProducts = dish && dish.ingredients ? [...dish.ingredients] : [];
+        currentPhotoUrl = dish ? (dish.image || '') : '';
+
+        document.getElementById('recipeModalTitle').textContent = dish ? 'Редактировать рецепт' : 'Добавить рецепт';
+        document.getElementById('btnSaveRecipe').textContent = dish ? 'Сохранить изменения' : 'Добавить рецепт';
+        document.getElementById('recipeName').value = dish ? dish.name : '';
+        document.getElementById('recipeCategory').value = category || 'salads';
+        document.getElementById('recipeFact').value = dish ? (dish.fact || '') : '';
+
+        const container = document.getElementById('recipeStepsContainer');
+        container.innerHTML = '';
+        const stepsToShow = dish && dish.steps && dish.steps.length > 0 ? dish.steps : [''];
+        stepsToShow.forEach((step, i) => addStepRow(i + 1, step));
+
+        document.getElementById('recipePhotoFile').value = '';
+        document.getElementById('recipePhotoUrl').value =
+            (dish && dish.image && !dish.image.startsWith('blob:')) ? dish.image : '';
+        const preview = document.getElementById('photoPreview');
+        if (dish && dish.image) {
+            preview.innerHTML = `<img src="${dish.image}" alt="Превью" onerror="this.style.display='none'">`;
+        } else {
+            preview.innerHTML = '';
+        }
+
+        renderSelectedChips();
+        openModal('modalAddRecipe');
+    }
+
+    document.getElementById('btnAddRecipe').addEventListener('click', () => openRecipeEditor());
+    document.getElementById('btnAddStep').addEventListener('click', () => {
+        const count = document.querySelectorAll('#recipeStepsContainer .step-row').length + 1;
+        addStepRow(count);
     });
 
-    // Показать/скрыть список продуктов для выбора
+    // ---- Продукты: выбор ----
     document.getElementById('btnPickProducts').addEventListener('click', () => {
-        const container = document.getElementById('productsPickerContainer');
-        if (container.style.display === 'none') {
-            container.style.display = 'block';
-            renderProductsPicker();
-        } else {
-            container.style.display = 'none';
-        }
+        renderProductsPicker();
+        openModal('modalPickProducts');
     });
 
     function renderProductsPicker() {
@@ -1390,9 +1615,10 @@
             if (items.length === 0) continue;
             hasAny = true;
             const groupLabel = document.createElement('div');
-            groupLabel.style.cssText = 'font-weight:600; font-size:0.78rem; color:#7a9ab8; margin:6px 0 2px; text-transform:uppercase;';
+            groupLabel.style.cssText = 'font-weight:700; font-size:0.74rem; color:#7a9ab8; margin:8px 0 4px; text-transform:uppercase; letter-spacing:0.6px;';
             groupLabel.textContent = label;
             container.appendChild(groupLabel);
+
             items.forEach((item, idx) => {
                 const div = document.createElement('div');
                 div.className = 'product-item';
@@ -1401,21 +1627,34 @@
                 cb.dataset.category = key;
                 cb.dataset.index = idx;
                 cb.id = `pick-${key}-${idx}`;
+                cb.checked = currentRecipeProducts.includes(item.name);
                 const labelEl = document.createElement('label');
                 labelEl.htmlFor = cb.id;
                 labelEl.textContent = item.name;
-                labelEl.style.cursor = 'pointer';
                 div.appendChild(cb);
                 div.appendChild(labelEl);
                 container.appendChild(div);
             });
         }
         if (!hasAny) {
-            container.innerHTML = '<div class="empty-hint">Сначала добавьте продукты в список выше.</div>';
+            container.innerHTML = '<div class="empty-hint" style="text-align:center; padding:20px 0;">Сначала добавьте продукты в список на вкладке «Новогодний стол».</div>';
         }
     }
 
-    // Загрузка фото — файл
+    document.getElementById('btnConfirmProducts').addEventListener('click', () => {
+        currentRecipeProducts = [];
+        document.querySelectorAll('#productsPickerContainer input[type="checkbox"]:checked').forEach(cb => {
+            const cat = cb.dataset.category;
+            const idx = parseInt(cb.dataset.index);
+            if (products[cat] && products[cat][idx]) {
+                currentRecipeProducts.push(products[cat][idx].name);
+            }
+        });
+        renderSelectedChips();
+        closeModal('modalPickProducts');
+    });
+
+    // ---- Фото ----
     document.getElementById('recipePhotoFile').addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -1426,12 +1665,12 @@
         }
     });
 
-    // Загрузка фото — URL
     document.getElementById('recipePhotoUrl').addEventListener('input', (e) => {
         const url = e.target.value.trim();
         if (url) {
             currentPhotoUrl = url;
-            document.getElementById('photoPreview').innerHTML = `<img src="${url}" alt="Превью" onerror="this.style.display='none'">`;
+            document.getElementById('photoPreview').innerHTML =
+                `<img src="${url}" alt="Превью" onerror="this.style.display='none'">`;
             document.getElementById('recipePhotoFile').value = '';
         } else {
             currentPhotoUrl = '';
@@ -1439,62 +1678,57 @@
         }
     });
 
-    // Сохранение рецепта
+    // ---- Сохранение ----
     document.getElementById('btnSaveRecipe').addEventListener('click', () => {
         const category = document.getElementById('recipeCategory').value;
         const name = document.getElementById('recipeName').value.trim();
-        if (!name) {
-            alert('Пожалуйста, введите название блюда.');
-            return;
-        }
+        if (!name) { alert('Введите название блюда.'); return; }
 
-        // Собираем шаги
-        const stepTextareas = document.querySelectorAll('#recipeStepsContainer textarea');
         const steps = [];
-        stepTextareas.forEach(ta => {
-            const val = ta.value.trim();
-            if (val) steps.push(val);
+        document.querySelectorAll('#recipeStepsContainer textarea').forEach(ta => {
+            const v = ta.value.trim();
+            if (v) steps.push(v);
         });
-        if (steps.length === 0) {
-            alert('Добавьте хотя бы один шаг рецепта.');
-            return;
-        }
+        if (steps.length === 0) { alert('Добавьте хотя бы один шаг.'); return; }
 
-        // Собираем выбранные продукты
-        const selectedProducts = [];
-        document.querySelectorAll('#productsPickerContainer input[type="checkbox"]:checked').forEach(cb => {
-            const cat = cb.dataset.category;
-            const idx = parseInt(cb.dataset.index);
-            if (products[cat] && products[cat][idx]) {
-                selectedProducts.push(products[cat][idx].name);
-            }
-        });
+        const fact = document.getElementById('recipeFact').value.trim() ||
+            'Это блюдо было добавлено вами! Возможно, у него есть своя уникальная история, которую знаете только вы. 😊';
 
-        // Факт — можно добавить поле, но для простоты сгенерируем автоматически
-        const fact = 'Это блюдо было добавлено вами! Возможно, у него есть своя уникальная история, которую знаете только вы. 😊';
-
-        const newDish = {
-            name: name,
-            fact: fact,
-            steps: steps,
-            image: currentPhotoUrl || '',
-            ingredients: selectedProducts
+        const dish = {
+            name, fact, steps,
+            image: currentPhotoUrl,
+            ingredients: [...currentRecipeProducts]
         };
 
-        if (!dishes[category]) dishes[category] = [];
-        dishes[category].push(newDish);
+        if (editingRecipe) {
+            if (editingRecipe.category !== category) {
+                dishes[editingRecipe.category].splice(editingRecipe.index, 1);
+                if (!dishes[category]) dishes[category] = [];
+                dishes[category].push(dish);
+            } else {
+                dishes[category][editingRecipe.index] = dish;
+            }
+        } else {
+            if (!dishes[category]) dishes[category] = [];
+            dishes[category].push(dish);
+        }
+
         renderDishes();
+        editingRecipe = null;
         closeModal('modalAddRecipe');
     });
 
     // ============================================================
-    // 9. ПРОСМОТР РЕЦЕПТА
+    // 9. ПРОСМОТР И УДАЛЕНИЕ РЕЦЕПТА
     // ============================================================
-    function openRecipeView(dish) {
-        document.getElementById('viewRecipeTitle').textContent = dish.name;
-        document.getElementById('viewRecipeFact').innerHTML = `<strong>😄 Интересный факт:</strong> ${dish.fact}`;
+    let viewingDish = null;
 
-        // Шаги
+    function openRecipeView(dish, category, index) {
+        viewingDish = { dish, category, index };
+        document.getElementById('viewRecipeTitle').textContent = dish.name;
+        document.getElementById('viewRecipeFact').innerHTML =
+            `<strong>😄 Интересный факт:</strong> ${dish.fact}`;
+
         const stepsList = document.getElementById('viewRecipeSteps');
         stepsList.innerHTML = '';
         dish.steps.forEach(step => {
@@ -1503,7 +1737,6 @@
             stepsList.appendChild(li);
         });
 
-        // Ингредиенты
         const ingDiv = document.getElementById('viewRecipeIngredients');
         if (dish.ingredients && dish.ingredients.length > 0) {
             ingDiv.textContent = '🍂 Вам понадобится: ' + dish.ingredients.join(', ');
@@ -1511,17 +1744,13 @@
             ingDiv.textContent = '';
         }
 
-        // Картинка
         const img = document.getElementById('viewRecipeImage');
         const placeholder = document.getElementById('viewRecipeImagePlaceholder');
         if (dish.image) {
             img.src = dish.image;
             img.style.display = 'block';
             placeholder.style.display = 'none';
-            img.onerror = () => {
-                img.style.display = 'none';
-                placeholder.style.display = 'flex';
-            };
+            img.onerror = () => { img.style.display = 'none'; placeholder.style.display = 'flex'; };
         } else {
             img.style.display = 'none';
             placeholder.style.display = 'flex';
@@ -1530,15 +1759,34 @@
         openModal('modalViewRecipe');
     }
 
+    document.getElementById('btnEditFromView').addEventListener('click', () => {
+        if (!viewingDish) return;
+        closeModal('modalViewRecipe');
+        openRecipeEditor(viewingDish.dish, viewingDish.category, viewingDish.index);
+    });
+
+    document.getElementById('btnDeleteFromView').addEventListener('click', () => {
+        if (!viewingDish) return;
+        if (confirm(`Удалить рецепт «${viewingDish.dish.name}»?`)) {
+            dishes[viewingDish.category].splice(viewingDish.index, 1);
+            renderDishes();
+            closeModal('modalViewRecipe');
+        }
+    });
+
+    function deleteDish(category, index) {
+        if (confirm(`Удалить рецепт «${dishes[category][index].name}»?`)) {
+            dishes[category].splice(index, 1);
+            renderDishes();
+        }
+    }
+
     // ============================================================
     // 10. ИНИЦИАЛИЗАЦИЯ
     // ============================================================
     renderProducts();
     renderDishes();
     renderDecor();
-
-    // Сохранение заметок декора (по желанию — можно и без сохранения)
-    // Данные в полях не сохраняются между перезагрузками, но это легко добавить через localStorage.
 </script>
 </body>
 </html>
